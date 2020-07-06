@@ -7,11 +7,7 @@
 #include <utility>
 #include <map>
 
-std::multimap<int, std::string, std::greater<int>> sorted_map;
-std::vector<std::string> vSrt;
 std::pair<std::string, std::string>  mySplitStr(std::string &str, char delimiter = '\t');
-void mySort(std::string str,
-std::multimap<std::string, std::string, std::greater<std::string>> &res);
 std::vector<std::string> Where(std::multimap<std::string, std::string, std::greater<std::string>> multiMap, std::string predicate, bool isAll = false);
 void Print(std::multimap<std::string, std::string, std::greater<std::string>> multiMap);
 void Print(std::vector<std::string> myVec);
