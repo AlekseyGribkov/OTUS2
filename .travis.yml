@@ -11,4 +11,4 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-  - curl -T OTUS1-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb  -ualekseygribkov:86b84ea7089a8d1df216fe8bb8637b67743857a3 "https://api.bintray.com/content/alekseygribkov/OTUS2/OTUS2/$TRAVIS_BUILD_NUMBER/OTUS2-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+  
