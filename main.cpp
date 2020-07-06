@@ -6,6 +6,7 @@
 
 #include <utility>
 #include <map>
+#include <limits>
 
 std::multimap<int, std::string, std::greater<int>> sorted_map;
 std::vector<std::string> vSrt;
@@ -14,7 +15,13 @@ std::vector<std::string> mySplit(std::string &str, char delimiter = '\t');
 std::pair<std::string, std::string>  mySplitStr(std::string &str, char delimiter = '\t');
 void mySort(std::string str,
 std::multimap<std::string, std::string, std::greater<std::string>> &res);
-std::vector<std::string> Where(std::multimap<std::string, std::string, std::greater<std::string>> multiMap, std::string predicate);
+std::vector<std::string> Where(std::multimap<std::string, std::string, std::greater<std::string>> multiMap, std::string predicate, bool isAll = false);
+void Print(std::multimap<std::string, std::string, std::greater<std::string>> multiMap);
+void Print(std::vector<std::string> myVec);
+
+std::vector<std::string> split(const std::string &s, char delim);
+
+void StartApp();
 
 void test()
 {
@@ -34,9 +41,62 @@ void test()
     }
 }
 
+
+
 int main(int argc, char const *argv[])
 {
+   std::cout << "enter an empty line to exit the program" << '\n';
     std::multimap<std::string, std::string, std::greater<std::string>> multiMap;
+    for(std::string line; std::getline(std::cin, line);)
+    {
+        auto res = mySplitStr(line);
+        
+        multiMap.emplace(res.first, res.first);
+        Print(multiMap);
+        auto vres = Where(multiMap, "1.");
+        Print(vres);
+        auto vres1 = Where(multiMap, "46.70.");
+        Print(vres1);
+        auto vres2 = Where(multiMap, "46", true);
+        Print(vres2);
+        
+    }
+
+    return 0;
+}
+
+/**************** split *************/
+std::vector<std::string> split(std::string &s, char delim) {
+    std::vector<std::string> elems;
+    std::stringstream ss(s);
+    std::string number;
+    while(std::getline(ss, number, delim)) {
+        elems.push_back(number);
+    }
+    return elems;
+}
+
+/*****************  Print  ************/
+void Print(std::vector<std::string> myVec)
+{
+   for(auto const& value: myVec)
+    {
+       std::cout << value << '\n';
+    }
+}
+
+void Print(std::multimap<std::string, std::string, std::greater<std::string>> multiMap)
+{
+    for (auto const& entry: multiMap)
+    {
+        std::cout << entry.second << '\n';
+    }
+}
+
+/***************** StartApp ***********/
+void StartApp()
+{
+  std::multimap<std::string, std::string, std::greater<std::string>> multiMap;
 
     std::string _str = "1\twold\t!";
     auto res = mySplitStr(_str);
@@ -57,21 +117,33 @@ int main(int argc, char const *argv[])
     {
        std::cout << value << '\n';
     }
-
-    return 0;
 }
+#include <limits>
+
 /***************** Where ***************/
-std::vector<std::string> Where(std::multimap<std::string, std::string, std::greater<std::string>> multiMap, std::string predicate)
+std::vector<std::string> Where(std::multimap<std::string, std::string, std::greater<std::string>> multiMap, std::string predicate, bool isAll)
 {
    std::vector<std::string> res;
     try
     {
         for (auto const& entry: multiMap)
         {
-           if(entry.first.find(predicate) == 0)
+            if(!isAll)
+            {
+                if(entry.first.find(predicate) == 0)
+                {
+                    res.push_back(entry.first);
+                }
+            }
+           else
            {
-               res.push_back(entry.second);
+                size_t n = entry.first.find(predicate);
+               if(n >= 0 && n <= entry.first.size())
+                {
+                    res.push_back(entry.first);
+                }
            }
+           
         }
     }
     catch(const std::exception& e)
@@ -86,12 +158,11 @@ std::pair<std::string, std::string> mySplitStr(std::string &str, char delimiter)
 {
    try
    {
-       std::stringstream ss(str);
-       std::string tmp;
-       while (std::getline(ss, tmp, delimiter)) {
-          std::pair<std::string, std::string> res = {tmp, str};
-         return res;
-         }
+       auto rvec = split(str, delimiter);
+       if(rvec.size() > 0)
+       {
+           return {rvec[0], str};
+       }
    }
    catch(const std::exception& e)
    {
