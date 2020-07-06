@@ -14,6 +14,7 @@ std::vector<std::string> mySplit(std::string &str, char delimiter = '\t');
 std::pair<std::string, std::string>  mySplitStr(std::string &str, char delimiter = '\t');
 void mySort(std::string str,
 std::multimap<std::string, std::string, std::greater<std::string>> &res);
+std::vector<std::string> Where(std::multimap<std::string, std::string, std::greater<std::string>> multiMap, std::string predicate);
 
 void test()
 {
@@ -33,12 +34,12 @@ void test()
     }
 }
 
-int main()
+int main(int argc, char const *argv[])
 {
     std::multimap<std::string, std::string, std::greater<std::string>> multiMap;
 
-    std::string str = "1\twold\t!";
-    auto res = mySplitStr(str);
+    std::string _str = "1\twold\t!";
+    auto res = mySplitStr(_str);
     multiMap.emplace(res.first, res.second);
 
      std::string str2 = "2\twold2\t!";
@@ -50,10 +51,35 @@ int main()
         std::cout <<  entry.second << '\n';
     }
 
+     auto vres = Where(multiMap, "1");
+
+    for(auto const& value: vres)
+    {
+       std::cout << value << '\n';
+    }
+
     return 0;
 }
-
-
+/***************** Where ***************/
+std::vector<std::string> Where(std::multimap<std::string, std::string, std::greater<std::string>> multiMap, std::string predicate)
+{
+   std::vector<std::string> res;
+    try
+    {
+        for (auto const& entry: multiMap)
+        {
+           if(entry.first.find(predicate) == 0)
+           {
+               res.push_back(entry.second);
+           }
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+   return res;
+}
 
 /***************** mySplitStr ***************/
 std::pair<std::string, std::string> mySplitStr(std::string &str, char delimiter)
