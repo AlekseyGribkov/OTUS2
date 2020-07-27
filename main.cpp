@@ -16,7 +16,7 @@ std::vector<std::string> split(const std::string &s, char delim);
 
 int main(int argc, char const *argv[])
 {
-   std::cout << "enter an empty line to exit the program" << '\n';
+   std::cout << "enter an empty line to exit the program " << '\n';
     std::multimap<std::string, std::string, std::greater<std::string>> multiMap;
     for(std::string line; std::getline(std::cin, line);)
     {
